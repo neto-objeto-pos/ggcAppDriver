@@ -1,0 +1,41 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+TestProject1
+</name>
+</assembly>
+<members>
+<member name="P:TestProject1.GRiderTest.TestContext">
+	<summary>
+Gets or sets the test context which provides
+information about and functionality for the current test run.
+</summary>
+</member><member name="M:TestProject1.GRiderTest.LogUserTest">
+	<summary>
+A test for LogUser
+</summary>
+</member><member name="M:TestProject1.GRiderTest.LoadEnvTest">
+	<summary>
+A test for LoadEnv
+</summary>
+</member><member name="M:TestProject1.GRiderTest.ExecuteQueryTest">
+	<summary>
+A test for ExecuteQuery
+</summary>
+</member><member name="M:TestProject1.GRiderTest.ExecuteQueryTest1">
+	<summary>
+A test for ExecuteQuery
+</summary>
+</member><member name="M:TestProject1.GRiderTest.loadConfigTest">
+	<summary>
+A test for loadConfig
+</summary>
+</member><member name="T:TestProject1.GRiderTest">
+	<summary>
+This is a test class for GRiderTest and is intended
+to contain all GRiderTest Unit Tests
+</summary>
+</member>
+</members>
+</doc>
