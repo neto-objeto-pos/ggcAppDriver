@@ -250,6 +250,7 @@ C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.vbproj.Res
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmCodeApproval.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmProgress.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmLogin.resources
+C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmUserDisc.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.Lookup.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.Resources.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.vbproj.GenerateResource.cache

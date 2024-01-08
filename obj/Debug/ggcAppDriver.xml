@@ -62,6 +62,11 @@ ggcAppDriver
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:ggcAppDriver.My.Resources.Resources.LP_Logo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:ggcAppDriver.My.Resources.Resources.mainbackground">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.

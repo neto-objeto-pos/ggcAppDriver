@@ -123,6 +123,12 @@
     <Compile Include="frmLogin.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmUserDisc.designer.vb">
+      <DependentUpon>frmUserDisc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserDisc.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="INIFile.vb" />
     <Compile Include="GRider.vb" />
     <Compile Include="Service References\Lookup.Designer.vb">
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserDisc.resx">
+      <DependentUpon>frmUserDisc.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Service References\Lookup.resx">
       <DependentUpon>Lookup.vb</DependentUpon>
@@ -234,6 +243,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mainbackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\LP Logo.png" />
+    <None Include="Resources\LP Logo1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

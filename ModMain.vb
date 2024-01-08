@@ -6,6 +6,8 @@ Imports System.Threading
 Imports System.Text.RegularExpressions
 
 Public Module ModMain
+    Private Declare Sub keybd_event Lib "user32.dll" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As UInteger, ByVal dwExtraInfo As UInteger)
+
     'mac 2020-07-23
     Public Function RMJExecute(ByVal WorkingDIR As String, ByVal ProcessPath As String, ByVal FileName As String) As Boolean
         Dim objProcess As System.Diagnostics.Process
@@ -123,9 +125,9 @@ Public Module ModMain
         Return Replace(Query, Find, Replacement, , , CompareMethod.Text)
     End Function
 
-    Public Function GetCodeApproval(ByVal oAppDriver As GRider, _
-                                    ByRef sApprovalCde As String, _
-                                    ByRef sApproveID As String, _
+    Public Function GetCodeApproval(ByVal oAppDriver As GRider,
+                                    ByRef sApprovalCde As String,
+                                    ByRef sApproveID As String,
                                     ByRef sApproveName As String) As Boolean
 
 
@@ -147,7 +149,7 @@ Public Module ModMain
                 lnCtr = 2
             Else
                 If Mid(UCase(loForm.CodeApproval), 4, 1) <> loForm.IssueeType Then
-                    MsgBox("Invalid Approval Parameter Detected." & vbCrLf & vbCrLf & _
+                    MsgBox("Invalid Approval Parameter Detected." & vbCrLf & vbCrLf &
                              "Kindly verify your entry.", vbCritical, "Approval Error")
                 Else
                     lbLogIn = True
@@ -171,13 +173,13 @@ endProc:
         Exit Function
     End Function
 
-    Public Function isValidApproveCode( _
-        ByVal fsSysReq As String, _
-        ByVal fsBranch As String, _
-        ByVal fsIssuee As String, _
-        ByVal fsDatexx As String, _
-        ByVal fsMiscxx As String, _
-        ByVal fsCdeGvn As String _
+    Public Function isValidApproveCode(
+        ByVal fsSysReq As String,
+        ByVal fsBranch As String,
+        ByVal fsIssuee As String,
+        ByVal fsDatexx As String,
+        ByVal fsMiscxx As String,
+        ByVal fsCdeGvn As String
         ) As Boolean
 
         Dim loCode As CodeApproval
@@ -208,27 +210,27 @@ endProc:
 
     End Function
 
-    Public Function GetNextCode(ByVal Table As String, _
-                                ByVal Field As String, _
-                                ByVal YearFormat As Boolean, _
+    Public Function GetNextCode(ByVal Table As String,
+                                ByVal Field As String,
+                                ByVal YearFormat As Boolean,
                                 ByVal Connection As MySqlConnection) As String
 
         Return GetNextCode(Table, Field, YearFormat, Connection, False, "")
     End Function
 
-    Public Function GetNextCode(ByVal Table As String, _
-                                ByVal Field As String, _
-                                ByVal YearFormat As Boolean, _
-                                ByVal Connection As MySqlConnection, _
+    Public Function GetNextCode(ByVal Table As String,
+                                ByVal Field As String,
+                                ByVal YearFormat As Boolean,
+                                ByVal Connection As MySqlConnection,
                                 ByVal ByBranch As Boolean) As String
         Return GetNextCode(Table, Field, YearFormat, Connection, ByBranch, "")
     End Function
 
-    Public Function GetNextCode(ByVal Table As String, _
-                                ByVal Field As String, _
-                                ByVal YearFormat As Boolean, _
-                                ByVal Connection As MySqlConnection, _
-                                ByVal ByBranch As Boolean, _
+    Public Function GetNextCode(ByVal Table As String,
+                                ByVal Field As String,
+                                ByVal YearFormat As Boolean,
+                                ByVal Connection As MySqlConnection,
+                                ByVal ByBranch As Boolean,
                                 ByVal Branch As String) As String
         Dim loDA As New MySqlDataAdapter
         Dim loDT As New DataTable
@@ -256,9 +258,9 @@ endProc:
             lnCounter = Len(lsField)
         End If
 
-        lsSQL = "SELECT " & Field & _
-                 " FROM " & Table & _
-                 " WHERE " & Field & " LIKE " & strParm(lsField & "%") & _
+        lsSQL = "SELECT " & Field &
+                 " FROM " & Table &
+                 " WHERE " & Field & " LIKE " & strParm(lsField & "%") &
                  " ORDER BY " & Field & " DESC LIMIT 1"
 
         Try
@@ -470,7 +472,7 @@ endProc:
 
     'Translated from VB6
     'KALYPTUS - 2013.04.02 
-    Public Function ADO2SQL( _
+    Public Function ADO2SQL(
                        ByVal foDta As DataTable _
                      , ByVal fsTableNme As String _
                      , Optional ByVal fsFilter As String = "" _
@@ -539,7 +541,7 @@ endProc:
 
     ' XerSys- 2013.05.22
     '   Allows client to specify current row for multi-row processing
-    Public Function ADO2SQL( _
+    Public Function ADO2SQL(
                        ByVal foDta As DataTable _
                      , ByVal fnRow As Integer _
                      , ByVal fsTableNme As String _
@@ -690,14 +692,14 @@ endProc:
         Dim lsString As String = ""
 
         If sSeparator = "" And sSeparator.Length <> 1 Then GoTo endProc
-        If sFormat = "" Then GoTo endproc
+        If sFormat = "" Then GoTo endProc
 
-        If InStr(sFormat, sSeparator, CompareMethod.Text) = 0 Then GoTo endproc
+        If InStr(sFormat, sSeparator, CompareMethod.Text) = 0 Then GoTo endProc
 
         lasFormat = Split(sFormat, sSeparator)
 
         For lnCtr = 0 To UBound(lasFormat)
-            lsString = lsString + Strings.Left(sValue, lasFormat(lnCtr).Length) & _
+            lsString = lsString + Strings.Left(sValue, lasFormat(lnCtr).Length) &
                         IIf(lnCtr = UBound(lasFormat), "", sSeparator)
             sValue = Strings.Right(sValue, sValue.Length - lasFormat(lnCtr).Length)
         Next
@@ -963,4 +965,19 @@ endProc:
     Public Const xsNULL_DATE As String = "1900-01-01"
     Public Const xsDECIMAL As String = "#,##0.00"
     Public Const xsINTEGER As String = "#,##0"
+
+    Private p_oSC As New MySqlCommand
+    Private Const xsSignature As String = "08220326"
+
+
+    Public Sub SetNextFocus()
+        keybd_event(&H9, 0, 0, 0)
+        keybd_event(&H9, 0, &H2, 0)
+    End Sub
+
+    Public Sub SetPreviousFocus()
+        keybd_event(&H10, 0, 0, 0)
+        keybd_event(&H9, 0, 0, 0)
+        keybd_event(&H10, 0, &H2, 0)
+    End Sub
 End Module

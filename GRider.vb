@@ -397,7 +397,54 @@ Public Class GRider
 
         Return True
     End Function
+    Function getUserApproval() As Boolean
+        Dim lofrmUserDisc As New frmUserDisc
+        Dim loDT As New DataTable
 
+        Dim lnCtr As Integer = 0
+        Dim lbValid As Boolean = False
+
+        With lofrmUserDisc
+            Do
+                .TopMost = True
+                .ShowDialog()
+                If .Cancelled = True Then
+                    Return False
+                End If
+
+
+                p_oSC.CommandText = getSQ_User()
+                p_oSC.Parameters.Clear()
+                p_oSC.Parameters.AddWithValue("?sLogNamex", Encrypt(lofrmUserDisc.LogName, xsSignature))
+                p_oSC.Parameters.AddWithValue("?sPassword", Encrypt(lofrmUserDisc.Password, xsSignature))
+
+                loDT = ExecuteQuery(p_oSC)
+
+
+                If loDT.Rows.Count = 0 Then
+                    MsgBox("User Does Not Exist!" & vbCrLf & "Verify log name and/or password.", vbCritical, "Warning")
+                    lnCtr += 1
+                Else
+
+                    If Not isUserActive(loDT) Then
+                        lnCtr = 0
+                    Else
+                        lbValid = True
+                    End If
+                End If
+            Loop Until lbValid Or lnCtr = 3
+        End With
+
+        If lbValid Then
+            p_sUserIDxx = loDT.Rows(0).Item("sUserIDxx")
+            p_sUserName = loDT.Rows(0).Item("sUserName")
+            p_sLogNamex = loDT.Rows(0).Item("sLogNamex")
+            p_nUserLevl = loDT.Rows(0).Item("nUserLevl")
+            p_sEmployNo = loDT.Rows(0).Item("sEmployNo")
+        End If
+
+        Return lbValid
+    End Function
     Public Function getConfiguration(ByVal ConfigCd As String, Optional ByVal BranchCd As String = "") As String
         Dim loDT As DataTable
         Dim lsSQL As String
