@@ -313,6 +313,59 @@ endProc:
 
     End Function
 
+
+    Public Function GetNextReference(ByVal Table As String,
+                                 ByVal Field As String,
+                                 ByVal Order As String,
+                                 ByVal BranchField As String,
+                                 ByVal Branch As String,
+                                 ByVal Connection As MySqlConnection) As String
+        Dim loDA As New MySqlDataAdapter
+        Dim loDT As New DataTable
+        Dim loDS As New DataSet
+        Dim lsSQL As String
+        Dim lnCode As Double
+        Dim lnLen As Long
+        Dim lsProcName As String
+
+        lsProcName = "GetNextReference"
+        ' On Error GoTo errProc
+
+        lsSQL = "SELECT " & Field &
+            " FROM " & Table &
+            " WHERE " & BranchField & " LIKE " & strParm(Branch) &
+            " ORDER BY " & Order & " DESC, " & Field & " DESC LIMIT 1"
+
+        Try
+            loDA.SelectCommand = New MySqlCommand(lsSQL, Connection)
+
+
+            loDT.Clear()
+        loDA.Fill(loDT)
+
+
+        If loDT.Rows.Count = 0 Then
+                lnCode = 1
+                lnLen = 0
+        Else
+            Dim value As Object = loDT.Rows(0)(Field)
+            If value Is DBNull.Value Then
+                lnCode = 0
+            Else
+                lnCode = CDbl(value) + 1
+            End If
+            lnLen = value.ToString().Length
+        End If
+
+        GetNextReference = lnCode.ToString().PadLeft(CInt(lnLen), "0")
+
+        Catch ex As MySqlException
+        MessageBox.Show("Error in " & lsProcName & " - " & ex.Message)
+        End Try
+
+        Return GetNextReference
+    End Function
+
     Public Function strParm(ByVal Value As String) As String
         Value = Replace(Value, Chr(34), Chr(34) & Chr(34))
         Value = Replace(Value, "\", "\\")
