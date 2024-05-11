@@ -246,7 +246,6 @@ C:\GGC_Systems\vb.net\RetMgtSys\ggcAppDriver.dll
 C:\GGC_Systems\vb.net\RetMgtSys\ggcAppDriver.pdb
 C:\GGC_Systems\vb.net\RetMgtSys\ggcAppDriver.xml
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.vbproj.AssemblyReference.cache
-C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.vbproj.ResolveComReference.cache
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmCodeApproval.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmProgress.resources
 C:\Users\Maynard\Documents\GitHub\ggcAppDriver\obj\Debug\ggcAppDriver.frmLogin.resources
