@@ -98,11 +98,21 @@ Public Class GRider
     Private pbChkErrCt As Boolean
     Private p_nHexCrypt As Integer
 
+    Private p_sAccredtn As String
+    Private p_sPermitNo As String
+    Private p_sSerialNo As String
+    Private p_sTerminal As String
+
     Public Function LoadEnv() As Boolean
         p_oConn = doConnect()
         If IsNothing(p_oConn) Then
             Return False
         End If
+
+        p_sAccredtn = ""
+        p_sPermitNo = ""
+        p_sSerialNo = ""
+        p_sTerminal = ""
 
         p_sCompName = Environment.MachineName
         Return loadConfig()
@@ -289,15 +299,15 @@ Public Class GRider
         If sBranchCd = "" Then
             sBranchCd = p_sBranchCd
         End If
-        lsSQL = "INSERT INTO xxxReplicationLog" & _
-                        " SET sTransNox = " & strParm(GetNextCode("xxxReplicationLog", "sTransNox", True, _
-                              p_oConn, True, p_sBranchCd)) & _
-                        ", sBranchCd = " & strParm(sBranchCd) & _
-                        ", sStatemnt = " & strParm(sQuery) & _
-                        ", sTableNme = " & strParm(sTableNme) & _
-                        ", sDestinat = " & strParm(sDestinat) & _
-                        ", sModified = " & strParm(p_sUserIDxx) & _
-                        ", dEntryDte = " & datetimeParm(SysDate()) & _
+        lsSQL = "INSERT INTO xxxReplicationLog" &
+                        " SET sTransNox = " & strParm(GetNextCode("xxxReplicationLog", "sTransNox", True,
+                              p_oConn, True, p_sBranchCd + p_sTerminal)) &
+                        ", sBranchCd = " & strParm(sBranchCd) &
+                        ", sStatemnt = " & strParm(sQuery) &
+                        ", sTableNme = " & strParm(sTableNme) &
+                        ", sDestinat = " & strParm(sDestinat) &
+                        ", sModified = " & strParm(p_sUserIDxx) &
+                        ", dEntryDte = " & datetimeParm(SysDate()) &
                         ", dModified = " & datetimeParm(SysDate())
         Debug.Print(lsSQL)
         Try
@@ -385,13 +395,13 @@ Public Class GRider
                                 ByVal sRemarksx As String, _
                                 ByVal sSerialNo As String) As Boolean
         'event log
-        Dim lsSQLEvent = "INSERT INTO Event_Master SET" & _
-                                "  sTransNox = " & strParm(GetNextCode("Event_Master", "sTransNox", True, Connection, True, BranchCode)) & _
-                                ", sEventIDx = " & strParm(sEventIDx) & _
-                                ", sRemarksx = " & strParm(sRemarksx) & _
-                                ", sUserIDxx = " & strParm(UserID) & _
-                                ", sSerialNo = " & strParm(sSerialNo) & _
-                                ", sComptrNm = " & strParm(Environment.MachineName) & _
+        Dim lsSQLEvent = "INSERT INTO Event_Master SET" &
+                                "  sTransNox = " & strParm(GetNextCode("Event_Master", "sTransNox", True, Connection, True, BranchCode + POSTerminal)) &
+                                ", sEventIDx = " & strParm(sEventIDx) &
+                                ", sRemarksx = " & strParm(sRemarksx) &
+                                ", sUserIDxx = " & strParm(UserID) &
+                                ", sSerialNo = " & strParm(sSerialNo) &
+                                ", sComptrNm = " & strParm(Environment.MachineName) &
                                 ", dModified = " & datetimeParm(getSysDate)
         Execute(lsSQLEvent, "lsSQLEvent")
 
@@ -839,6 +849,29 @@ Public Class GRider
         End Get
     End Property
 
+    Public ReadOnly Property POSAccreditation As String
+        Get
+            POSAccreditation = p_sAccredtn
+        End Get
+    End Property
+
+    Public ReadOnly Property POSPermitNo As String
+        Get
+            POSPermitNo = p_sPermitNo
+        End Get
+    End Property
+
+    Public ReadOnly Property POSSerialNo As String
+        Get
+            POSSerialNo = p_sSerialNo
+        End Get
+    End Property
+
+    Public ReadOnly Property POSTerminal As String
+        Get
+            POSTerminal = p_sTerminal
+        End Get
+    End Property
 
     Public Property MDI As Object
         Get
@@ -898,6 +931,39 @@ Public Class GRider
 
         Return loDT(0).Item(0).ToString
     End Function
+
+    Public Function initMachine() As Boolean
+        If Environment.GetEnvironmentVariable("RMS-CRM-No") = "" Then
+            MsgBox("Invalid Machine Identification Info Detected...")
+            Return False
+        End If
+
+        Dim lsSQL As String
+        lsSQL = "SELECT" &
+                       "  sAccredtn" &
+                       ", sPermitNo" &
+                       ", sSerialNo" &
+                       ", nPOSNumbr" &
+                       ", nZReadCtr" &
+               " FROM Cash_Reg_Machine" &
+               " WHERE sIDNumber = " & strParm(Environment.GetEnvironmentVariable("RMS-CRM-No"))
+
+        Dim loDta As DataTable
+        loDta = p_oAppDriver.ExecuteQuery(lsSQL)
+
+        If loDta.Rows.Count <> 1 Then
+            MsgBox("Invalid Config for MIN Detected...")
+            Return False
+        End If
+
+        p_sAccredtn = loDta(0).Item("sAccredtn")
+        p_sPermitNo = loDta(0).Item("sPermitNo")
+        p_sSerialNo = loDta(0).Item("sSerialNo")
+        p_sTerminal = loDta(0).Item("nPOSNumbr")
+
+        Return True
+    End Function
+
 
     Public Function Encrypt(ByVal Code As String, Optional ByVal Signature As String = "") As String
         Dim loCrypt As New Crypto
