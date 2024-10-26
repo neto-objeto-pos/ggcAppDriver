@@ -11,6 +11,7 @@ Public Module ModMain
     'mac 2020-07-23
     Public Function RMJExecute(ByVal WorkingDIR As String, ByVal ProcessPath As String, ByVal FileName As String) As Boolean
         Dim objProcess As System.Diagnostics.Process
+        Dim loObjReturn As Long
         Try
             objProcess = New System.Diagnostics.Process()
             objProcess.StartInfo.WorkingDirectory = WorkingDIR
@@ -23,12 +24,13 @@ Public Module ModMain
             objProcess.WaitForExit()
 
             'Free resources associated with this process
+            loObjReturn = objProcess.ExitCode
             objProcess.Close()
         Catch
             Return False
         End Try
 
-        Return True
+        Return loObjReturn
     End Function
 
     'mac 2020-07-23
