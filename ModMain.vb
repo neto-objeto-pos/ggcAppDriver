@@ -9,7 +9,7 @@ Public Module ModMain
     Private Declare Sub keybd_event Lib "user32.dll" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As UInteger, ByVal dwExtraInfo As UInteger)
 
     'mac 2020-07-23
-    Public Function RMJExecute(ByVal WorkingDIR As String, ByVal ProcessPath As String, ByVal FileName As String) As Boolean
+    Public Function RMJExecuteLong(ByVal WorkingDIR As String, ByVal ProcessPath As String, ByVal FileName As String) As Long
         Dim objProcess As System.Diagnostics.Process
         Dim loObjReturn As Long
         Try
@@ -31,6 +31,28 @@ Public Module ModMain
         End Try
 
         Return loObjReturn
+    End Function
+
+    Public Function RMJExecute(ByVal WorkingDIR As String, ByVal ProcessPath As String, ByVal FileName As String) As Boolean
+        Dim objProcess As System.Diagnostics.Process
+        Try
+            objProcess = New System.Diagnostics.Process()
+            objProcess.StartInfo.WorkingDirectory = WorkingDIR
+            objProcess.StartInfo.FileName = ProcessPath
+            objProcess.StartInfo.Arguments = FileName
+            objProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+            objProcess.Start()
+
+            'Wait until the process passes back an exit code 
+            objProcess.WaitForExit()
+
+            'Free resources associated with this process
+            objProcess.Close()
+        Catch
+            Return False
+        End Try
+
+        Return True
     End Function
 
     'mac 2020-07-23
