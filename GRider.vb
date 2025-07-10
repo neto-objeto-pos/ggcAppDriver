@@ -429,11 +429,17 @@ Public Class GRider
                     If Not isUserActive(loDT) Then
                         lnCtr = 0
                     Else
-                        lbValid = True
+                        If loDT.Rows(0).Item("nUserLevl") > xeUserRights.DATAENTRY Then
+                            lbValid = True
+                        Else
+                            MsgBox("User is not allowed to approve this transaction!" & vbCrLf & "Verify user name and/or password.", vbCritical, "Warning")
+                            lnCtr += 1
+                        End If
                     End If
                 End If
             Loop Until lbValid Or lnCtr = 3
         End With
+
 
         If lbValid Then
             p_sUserIDxx = loDT.Rows(0).Item("sUserIDxx")
@@ -450,15 +456,15 @@ Public Class GRider
         Dim lsSQL As String
 
         If BranchCd = "" Then
-            lsSQL = "SELECT sValuexxx" & _
-                     " FROM xxxOtherConfig" & _
-                     " WHERE sProdctID = " & strParm(p_sProdctID) & _
+            lsSQL = "SELECT sValuexxx" &
+                     " FROM xxxOtherConfig" &
+                     " WHERE sProdctID = " & strParm(p_sProdctID) &
                         " AND sConfigId = " & strParm(ConfigCd)
         Else
-            lsSQL = "SELECT " & ConfigCd & " sValuexxx" & _
-                     " FROM xxxOtherInfo a" & _
-                        " LEFT JOIN xxxSysClient b" & _
-                           " ON a.sClientID = b.sClientID" & _
+            lsSQL = "SELECT " & ConfigCd & " sValuexxx" &
+                     " FROM xxxOtherInfo a" &
+                        " LEFT JOIN xxxSysClient b" &
+                           " ON a.sClientID = b.sClientID" &
                      " WHERE sBranchCd = " & strParm(BranchCd)
         End If
 
@@ -505,10 +511,10 @@ Public Class GRider
         p_sServerPs = lsPassword
         p_sServerUs = lsUserName
 
-        lsConnStr = "Data Source=" & p_sServerNm & ";" & _
-                    "Database=" & p_sDatabase & ";" & _
-                    "User=" & lsUserName & ";" & _
-                    "Password=" & lsPassword & ";" & _
+        lsConnStr = "Data Source=" & p_sServerNm & ";" &
+                    "Database=" & p_sDatabase & ";" &
+                    "User=" & lsUserName & ";" &
+                    "Password=" & lsPassword & ";" &
                     "Convert Zero Datetime=True;"
         ' "MultipleActiveResultSets=True"
         ' Include this to allow data transfer from mysql to adodb object
