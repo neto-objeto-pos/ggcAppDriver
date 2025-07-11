@@ -440,15 +440,6 @@ Public Class GRider
             Loop Until lbValid Or lnCtr = 3
         End With
 
-
-        If lbValid Then
-            p_sUserIDxx = loDT.Rows(0).Item("sUserIDxx")
-            p_sUserName = loDT.Rows(0).Item("sUserName")
-            p_sLogNamex = loDT.Rows(0).Item("sLogNamex")
-            p_nUserLevl = loDT.Rows(0).Item("nUserLevl")
-            p_sEmployNo = loDT.Rows(0).Item("sEmployNo")
-        End If
-
         Return lbValid
     End Function
     Public Function getConfiguration(ByVal ConfigCd As String, Optional ByVal BranchCd As String = "") As String
